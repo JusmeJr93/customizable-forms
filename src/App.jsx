@@ -1,25 +1,40 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import TemplateList from "./pages/TemplateList";
+import FormPage from "./pages/FormPage";
+import { Toaster } from "react-hot-toast";
+import CreateTemplate from "./pages/CreateTemplate";
 
-const App = () => {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    axios
-      // .get("http://localhost:3000/")
-      .get("https://customizable-forms-ab996e6d17b2.herokuapp.com/")
-      .then((response) => setMessage(response.data))
-      .catch((error) => console.error(error));
-  }, []);
-
+function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <h1 className="text-lg">
-        <span className="text-2xl  font-bold">Message from server:</span> <br />
-        {message}
-      </h1>
-    </div>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/templates" element={<TemplateList />} />
+          <Route path="/templates/create" element={<CreateTemplate />} />
+          <Route path="/templates/:id" element={<FormPage />} />
+        </Routes>
+      </Router>
+
+      <Toaster
+        position="top-center"
+        gutter={12}
+        containerStyle={{ margin: "8px" }}
+        toastOptions={{
+          success: { duration: 300 },
+          error: { duration: 5000 },
+          style: {
+            fontSize: "16px",
+            maxWidth: "500px",
+            padding: "16px 24px",
+            backgroundColor: "var(--color-grey-0)",
+            color: "var(--color-grey-700)",
+          },
+        }}
+      />
+    </>
   );
-};
+}
 
 export default App;
